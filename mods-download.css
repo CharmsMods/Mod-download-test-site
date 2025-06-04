@@ -1,0 +1,372 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+  min-height: 100vh;
+  color: #334155;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle animated background elements */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.container {
+  /* Removed max-width to allow full horizontal stretch */
+  width: 100%; /* Ensures it takes full width */
+  margin: 40px auto; /* Keeps vertical margin */
+  padding: 40px 60px; /* Increased padding to give space from screen edges */
+  text-align: center;
+}
+
+header h1 {
+  font-size: 3.5em;
+  color: #1e293b;
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1.2em;
+  color: #64748b;
+  margin-bottom: 40px;
+}
+
+/* Dynamic grid: as many cards as fit, each at least 400px wide */
+.mods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Auto-fit with large minimum width */
+  gap: 30px; /* Gap between cards */
+  padding: 20px 0;
+}
+
+.mod-card {
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 40px; /* Increased padding for bigger cards */
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-left: 4px solid #3b82f6;
+  animation: fadeInDown 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.mod-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.mod-card h2 {
+  font-size: 2.8em; /* Increased font size for title */
+  color: #1e293b;
+  margin-top: 10px;
+  margin-bottom: 25px; /* Increased bottom margin */
+  font-weight: 600;
+}
+
+.mod-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Styling for the 2x2 image grid within the card */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px; /* Increased gap between images */
+    width: 100%;
+    margin-top: 25px; /* Increased margin top */
+}
+
+.image-grid img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.image-grid img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Mod Tray for expandable content */
+.mod-tray {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 0;
+    padding-top: 25px; /* Increased padding top */
+    margin-top: 25px; /* Increased margin top */
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+
+/* When the card is expanded, show the tray */
+.mod-card.expanded .mod-tray {
+    max-height: 1000px; /* Adjusted max-height to accommodate larger image grid */
+    opacity: 1;
+}
+
+/* Download Button Styling */
+.download-button {
+    margin-top: 30px; /* Increased margin top */
+    padding: 20px 45px; /* Increased padding */
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.4em; /* Increased font size */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.download-button:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+}
+
+.download-button.coming-soon {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.download-button.coming-soon:hover {
+    background-color: #94a3b8;
+    transform: none;
+}
+
+/* Back Button */
+.back-button {
+    display: inline-block;
+    margin-top: 60px; /* Increased margin top */
+    padding: 18px 45px; /* Increased padding */
+    background-color: #64748b;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-button:hover {
+    background-color: #475569;
+    transform: translateY(-2px);
+}
+
+/* Fullscreen Modal for Images */
+.fullscreen-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: none;
+}
+
+.fullscreen-modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 50px; /* Increased close button size */
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 60px; /* Increased close button size */
+    height: 60px; /* Increased close button size */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease, background 0.3s ease;
+    opacity: 0.7;
+}
+
+.close-button:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+/* Tablet/Medium Screens: Cards adapt to fit, but min-width is reduced */
+@media (max-width: 1200px) {
+    .container {
+        padding: 30px 40px; /* Reduced padding for smaller screens */
+    }
+    .mods-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Slightly smaller min-width */
+        gap: 25px;
+    }
+    .mod-card {
+        padding: 35px;
+    }
+    .mod-card h2 {
+        font-size: 2.5em;
+    }
+    .image-grid {
+        gap: 20px;
+    }
+    .mod-tray {
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+    .mod-card.expanded .mod-tray {
+        max-height: 900px; /* Adjust max-height for tablets */
+    }
+}
+
+/* Smaller Tablets/Large Phones: Cards adapt to fit, min-width reduced further */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 25px; /* Further reduced padding */
+  }
+  header h1 {
+    font-size: 2.5em;
+  }
+  .subtitle {
+    font-size: 1em;
+  }
+  .mod-card {
+    padding: 30px;
+  }
+  .mod-card h2 {
+    font-size: 2em;
+  }
+  .mods-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Min-width for smaller tablets/phones */
+    gap: 20px;
+  }
+  .image-grid {
+    gap: 15px;
+  }
+  .mod-tray {
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+  .mod-card.expanded .mod-tray {
+    max-height: 700px;
+  }
+  .download-button {
+    padding: 14px 30px;
+    font-size: 1.1em;
+  }
+  .back-button {
+    padding: 12px 30px;
+    font-size: 1em;
+  }
+}
+
+/* Mobile/Small Screens: Single card per row */
+@media (max-width: 480px) {
+  .container {
+    padding: 10px 15px; /* Minimal padding on very small screens */
+    margin: 20px auto;
+  }
+  .mods-grid {
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 15px;
+  }
+  .mod-card {
+    margin: 0; /* Remove any side margin if present */
+    padding: 25px;
+  }
+  .mod-card h2 {
+    font-size: 1.8em;
+    margin-bottom: 15px;
+  }
+  .image-grid {
+      gap: 10px;
+  }
+  .mod-tray {
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+  .mod-card.expanded .mod-tray {
+    max-height: 550px;
+  }
+  .download-button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+  .back-button {
+    padding: 8px 20px;
+    font-size: 0.8em;
+    margin-top: 30px;
+  }
+  .close-button {
+    font-size: 40px;
+    width: 50px;
+    height: 50px;
+    top: 15px;
+    right: 20px;
+  }
+}
