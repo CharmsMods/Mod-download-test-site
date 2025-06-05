@@ -3,64 +3,78 @@ document.addEventListener('DOMContentLoaded', () => {
     // 'name' property will store the full zip filename (e.g., "Blue Sky.zip")
     // 'folder' property will store the folder name (e.g., "Blue Sky")
     // 'link' will be dynamically constructed based on 'name' and 'folder'
-    // Removed duplicates and "Modded FOV & Aim Trainer, white.zip" as requested.
-    const rawModsData = [
-        "Blue Sky.zip",
-        "Fugaz13-mod.zip",
-        "Samu-mod.zip",
-        "pred_mod.zip",
-        "2FLYOG.zip",
-        "PARADISE.zip",
-        "NticxMod-v6.zip",
-        "Peru-Mod.zip",
-        "Nio-mod-purple-main.zip",
-        "BO$$ MOD V8 - enjoy!.zip",
-        "Cream Mod.zip",
-        "Grey Mod.zip",
-        "Illumination Mod.zip",
-        "Sketch Mod.zip",
-        "EROS MOD.zip",
-        "skylux mod.zip",
-        "vvsmod.zip",
-        "Psychologixal-Mod.zip",
-        // Removed the duplicate "Blue Sky.zip"
-        "Charm Mod.zip",
-        // Removed "Modded FOV & Aim Trainer, white.zip"
-        "Ren-Mod.zip",
-        "OOOPS-Mod.zip",
-        "aim_trainer.zip",
-        "Jolt Mod v1.zip",
-        "ANIMALS HELL-Mod.zip",
-        "BossMod.zip",
-        "FOV MOD.zip"
+    // 'images' now explicitly lists the images available for each mod.
+    const modsConfig = [
+        // --- NEWLY ADDED MODS ---
+        { name: "hate_mod.zip", folder: "hate_mod", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "Jolt_Mod_v1.zip", folder: "Jolt_Mod_v1", images: ["1.png", "2.png", "3.png", "4.png"] }, // Kept this as it's the more recently added, and potentially more complete, version.
+        { name: "AQUA-Mod.zip", folder: "AQUA-Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "2fly.zip", folder: "2fly", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "Skipper-Mod.zip", folder: "Skipper-Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
+        // --- EXISTING MODS (Duplicates removed) ---
+        { name: "Blue Sky.zip", folder: "Blue Sky", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "Fugaz13-mod.zip", folder: "Fugaz13-mod", images: ["1.png", "2.png"] },
+        { name: "Samu-mod.zip", folder: "Samu-mod", images: ["1.png", "2.png", "3.png"] },
+        { name: "pred_mod.zip", folder: "pred_mod", images: ["1.png"] },
+        { name: "2FLYOG.zip", folder: "2FLYOG", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "PARADISE.zip", folder: "PARADISE", images: ["1.png", "2.png"] },
+        { name: "NticxMod-v6.zip", folder: "NticxMod-v6", images: ["1.png", "2.png", "3.png"] },
+        { name: "Peru-Mod.zip", folder: "Peru-Mod", images: ["1.png"] },
+        { name: "Nio-mod-purple-main.zip", folder: "Nio-mod-purple-main", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "BO$$ MOD V8 - enjoy!.zip", folder: "BO$$ MOD V8 - enjoy!", images: ["1.png", "2.png"] }, // Kept this due to more specific name.
+        { name: "Cream Mod.zip", folder: "Cream Mod", images: ["1.png", "2.png", "3.png"] },
+        { name: "Grey Mod.zip", folder: "Grey Mod", images: ["1.png"] },
+        { name: "Illumination Mod.zip", folder: "Illumination Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "Sketch Mod.zip", folder: "Sketch Mod", images: ["1.png", "2.png"] },
+        { name: "EROS MOD.zip", folder: "EROS MOD", images: ["1.png", "2.png", "3.png"] },
+        { name: "skylux mod.zip", folder: "skylux mod", images: ["1.png"] },
+        { name: "vvsmod.zip", folder: "vvsmod", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "Psychologixal-Mod.zip", folder: "Psychologixal-Mod", images: ["1.png", "2.png"] },
+        { name: "Charm Mod.zip", folder: "Charm Mod", images: ["1.png", "2.png", "3.png"] },
+        { name: "Ren-Mod.zip", folder: "Ren-Mod", images: ["1.png"] },
+        { name: "OOOPS-Mod.zip", folder: "OOOPS-Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
+        { name: "aim_trainer.zip", folder: "aim_trainer", images: ["1.png", "2.png"] },
+        { name: "ANIMALS HELL-Mod.zip", folder: "ANIMALS HELL-Mod", images: ["1.png"] },
+        { name: "FOV MOD.zip", folder: "FOV MOD", images: ["1.png", "2.png", "3.png"] }
     ];
 
-    // Process raw data to create full mod objects
-    const modsData = rawModsData.map(modName => {
-        let folderName = modName;
-        // Strip common extensions to get the folder name
-        const extensions = ['.zip', '.7z', '.rar', '.exe', '.tar', '.gz', '.dmg'];
-        for (const ext of extensions) {
-            if (folderName.endsWith(ext)) {
-                folderName = folderName.slice(0, -ext.length);
-                break;
-            }
-        }
-        folderName = folderName.trim().replace(/[-_.,]+$/, ''); // Clean up trailing characters if any
-
+    // Process mod data to add download links
+    const modsData = modsConfig.map(mod => {
         return {
-            name: modName, // Full zip filename
-            link: null, // Will be generated, or set to null for "Coming Soon"
-            images: ["1.png", "2.png", "3.png", "4.png"],
-            folder: folderName // Folder name without extension
+            ...mod, // Keep existing properties (name, folder, images)
+            link: `mod-download-card-pictures/${mod.folder}/${mod.name}` // Dynamically construct link
         };
     });
-
 
     const modsGrid = document.getElementById('modsGrid');
     const fullscreenModal = document.querySelector('.fullscreen-modal');
     const modalImage = document.querySelector('.fullscreen-modal img');
     const closeModal = document.querySelector('.close-button');
+
+    // Custom Modal for "Coming Soon" messages
+    const messageModal = document.getElementById('messageModal');
+    const modalMessage = document.getElementById('modalMessage');
+    const modalCloseButton = document.getElementById('modalCloseButton');
+
+    // Function to show the custom message modal
+    function showMessageModal(message) {
+        modalMessage.textContent = message;
+        messageModal.style.display = 'flex'; // Show the modal
+    }
+
+    // Function to hide the custom message modal
+    function hideMessageModal() {
+        messageModal.style.display = 'none'; // Hide the modal
+    }
+
+    // Event listener for the custom message modal's close button
+    modalCloseButton.addEventListener('click', hideMessageModal);
+    // Event listener for clicking outside the custom message modal content
+    messageModal.addEventListener('click', (event) => {
+        if (event.target === messageModal) {
+            hideMessageModal();
+        }
+    });
 
     // Function to create a mod card
     function createModCard(mod, index) {
@@ -68,10 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('mod-card');
         card.style.animationDelay = `${0.1 * (index + 1)}s`;
 
-        // The download link is now always constructed based on the folder and full zip name.
-        // If you need specific "Coming Soon" mods, set mod.link to null *before* calling createModCard,
-        // or add a property like 'isComingSoon: true' to the modData.
-        const downloadLink = mod.link === null ? null : `mod-download-card-pictures/${mod.folder}/${mod.name}`;
+        const downloadLink = mod.link; // Link is already constructed in modsData
         const buttonClass = downloadLink ? 'download-button' : 'download-button coming-soon';
         const buttonText = downloadLink ? 'Download' : 'Coming Soon';
         const buttonDataLink = downloadLink ? `data-link="${downloadLink}"` : '';
@@ -85,12 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             }
         }
-        displayName = displayName.trim().replace(/[-_.,]+$/, '');
-
+        displayName = displayName.trim().replace(/[-_.,]+$/, ''); // Ensure no trailing hyphens/underscores
 
         let imageGridHtml = '';
+        // Loop through the mod.images array to create image tags
         mod.images.forEach(image => {
-            // Image path uses the 'folder' property (without extension)
             imageGridHtml += `<img src="mod-download-card-pictures/${mod.folder}/${image}" alt="${displayName} Image">`;
         });
 
@@ -116,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.open(link, '_blank');
                 }
             } else {
-                alert("This mod is coming soon!");
+                showMessageModal("This mod is coming soon!"); // Use custom modal
             }
         });
 
@@ -140,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 modTray.classList.remove('show-images');
             } else {
                 card.classList.add('expanded');
+                // Set maxHeight to scrollHeight plus a buffer to ensure content fits
                 modTray.style.maxHeight = modTray.scrollHeight + 50 + 'px';
                 modTray.classList.add('show-images');
             }
@@ -160,10 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Populate the mods grid
     modsData.forEach((mod, index) => {
-        // This is the line to change:
-        // Set mod.link to the dynamically constructed path, enabling downloads for all mods.
-        mod.link = `mod-download-card-pictures/${mod.folder}/${mod.name}`;
-
         modsGrid.appendChild(createModCard(mod, index));
     });
 

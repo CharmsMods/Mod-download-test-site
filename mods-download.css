@@ -1,3 +1,4 @@
+/* Reset and base styles */
 * {
   margin: 0;
   padding: 0;
@@ -6,238 +7,308 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+  background: #1a1a1a; /* Dark background from asset-list-page.css */
+  color: #ffffff; /* White text for dark theme */
   min-height: 100vh;
-  color: #334155;
   line-height: 1.6;
   position: relative;
   overflow-x: hidden;
 }
 
-/* Subtle animated background elements */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
-              radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-              radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
+/* Removed subtle animated background elements (body::before)
+   as they were designed for a light background and wouldn't fit a dark theme. */
+
+/* Container styles */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  animation: fadeInUp 0.8s ease-out forwards;
 }
 
-.container {
-  /* Removed max-width to allow full horizontal stretch */
-  width: 100%; /* Ensures it takes full width */
-  margin: 40px auto; /* Keeps vertical margin */
-  padding: 40px 60px; /* Increased padding to give space from screen edges */
+/* Header styles */
+header {
   text-align: center;
+  margin-bottom: 50px;
+  padding: 2rem; /* Consistent with asset-list-page.css header padding */
+  background: rgba(255, 255, 255, 0.05); /* Translucent background for header */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Darker shadow */
+  border-radius: 8px; /* Slightly rounded corners */
+  margin-bottom: 30px; /* Space below header */
 }
 
 header h1 {
   font-size: 3.5em;
-  color: #1e293b;
-  margin-bottom: 10px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  margin-bottom: 15px;
+  color: #ffffff; /* Ensure title is white */
+  text-shadow: 0 0 15px rgba(108, 92, 231, 0.2); /* Accent glow from asset-list-page.css */
+  background: linear-gradient(90deg, #6c5ce7, #a29bfe); /* Re-introducing a subtle gradient */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradientShift 3s linear infinite alternate;
 }
 
 .subtitle {
   font-size: 1.2em;
-  color: #64748b;
-  margin-bottom: 40px;
+  color: #a0a0a0; /* Lighter grey for subtitle */
+  line-height: 1.5;
 }
 
-/* Dynamic grid: as many cards as fit, each at least 400px wide */
+/* Keyframe for header text gradient animation */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+
+/* Mod Grid styles */
 .mods-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Auto-fit with large minimum width */
-  gap: 30px; /* Gap between cards */
-  padding: 20px 0;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
 }
 
+/* Mod Card styles */
 .mod-card {
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-  padding: 40px; /* Increased padding for bigger cards */
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  background: #2a2a2a; /* Dark background for cards */
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Darker, more pronounced shadow */
   overflow: hidden;
-  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 40px;
+  border-left: 5px solid #6c5ce7; /* Accent color border */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-left: 4px solid #3b82f6;
+  justify-content: space-between;
   animation: fadeInDown 0.6s ease-out forwards;
-  opacity: 0;
+  opacity: 0; /* Start invisible for animation */
 }
 
 .mod-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6); /* Even darker shadow on hover */
+}
+
+/* Shimmer effect for mod cards */
+.mod-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.7s ease;
+  pointer-events: none;
+}
+
+.mod-card:hover::before {
+  left: 100%;
 }
 
 .mod-card h2 {
-  font-size: 2.8em; /* Increased font size for title */
-  color: #1e293b;
-  margin-top: 10px;
-  margin-bottom: 25px; /* Increased bottom margin */
-  font-weight: 600;
+  font-size: 2.2em;
+  margin-bottom: 25px;
+  color: #ffffff; /* White for mod titles */
+  text-align: center;
 }
 
 .mod-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1; /* Allow content to take available space */
 }
 
-/* Styling for the 2x2 image grid within the card */
+/* Mod Tray (for images) styles */
+.mod-tray {
+  max-height: 0; /* Hidden by default */
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out, padding-top 0.5s ease-in-out, margin-top 0.5s ease-in-out, opacity 0.5s ease;
+  opacity: 0;
+  padding-top: 0;
+  margin-top: 0;
+  text-align: center; /* Center images */
+}
+
+.mod-tray.show-images {
+  opacity: 1;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+/* Image grid styles */
 .image-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px; /* Increased gap between images */
-    width: 100%;
-    margin-top: 25px; /* Increased margin top */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding-top: 10px;
 }
 
 .image-grid img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    cursor: pointer;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow for images */
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
 }
 
 .image-grid img:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
-/* Mod Tray for expandable content */
-.mod-tray {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    opacity: 0;
-    padding-top: 25px; /* Increased padding top */
-    margin-top: 25px; /* Increased margin top */
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
-    width: 100%;
-}
-
-/* When the card is expanded, show the tray */
-.mod-card.expanded .mod-tray {
-    max-height: 1000px; /* Adjusted max-height to accommodate larger image grid */
-    opacity: 1;
-}
-
-/* Download Button Styling */
+/* Download Button styles */
 .download-button {
-    margin-top: 30px; /* Increased margin top */
-    padding: 20px 45px; /* Increased padding */
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 1.4em; /* Increased font size */
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  padding: 16px 35px;
+  margin-top: 25px; /* Margin after content */
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  /* Use the accent color from asset-list-page.css for the button */
+  background: linear-gradient(90deg, #6c5ce7, #8e80f9); /* Gradient from asset-list-page.css accent */
+  background-size: 200% auto; /* For gradient shift animation */
+  transition: background-position 0.4s ease, transform 0.2s ease;
+  box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3); /* Accent colored shadow */
 }
 
 .download-button:hover {
-    background-color: #2563eb;
-    transform: translateY(-2px);
+  background-position: right center; /* Shift gradient on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 7px 20px rgba(108, 92, 231, 0.4);
 }
 
 .download-button.coming-soon {
-    background-color: #94a3b8;
-    cursor: not-allowed;
-    box-shadow: none;
+  background: #444; /* Darker grey for coming soon */
+  cursor: not-allowed;
+  box-shadow: none;
+  opacity: 0.7;
 }
 
 .download-button.coming-soon:hover {
-    background-color: #94a3b8;
-    transform: none;
+    background: #444; /* Keep same background on hover */
+    transform: none; /* No transform on hover */
+    box-shadow: none;
 }
 
-/* Back Button */
+
+/* Back to Home Button */
 .back-button {
-    display: inline-block;
-    margin-top: 60px; /* Increased margin top */
-    padding: 18px 45px; /* Increased padding */
-    background-color: #64748b;
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: block;
+  width: fit-content;
+  margin: 50px auto 20px auto;
+  padding: 14px 30px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #333; /* Dark grey for contrast */
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .back-button:hover {
-    background-color: #475569;
-    transform: translateY(-2px);
+  background-color: #555;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* Fullscreen Modal for Images */
+
+/* Fullscreen Modal Styles */
 .fullscreen-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    display: none;
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Darker overlay */
+  justify-content: center;
+  align-items: center;
+  cursor: zoom-out;
 }
 
 .fullscreen-modal img {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 10px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.7); /* Stronger shadow for modal image */
 }
 
 .close-button {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    color: #fff;
-    font-size: 50px; /* Increased close button size */
-    cursor: pointer;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    width: 60px; /* Increased close button size */
-    height: 60px; /* Increased close button size */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease, background 0.3s ease;
-    opacity: 0.7;
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #ffffff;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for button */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.close-button:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.7);
+.close-button:hover,
+.close-button:focus {
+  color: #6c5ce7; /* Accent color on hover */
+  transform: rotate(90deg);
 }
 
-/* Animations */
+
+/* Custom Message Modal */
+#messageModal .modal-content {
+    background-color: #2a2a2a; /* Dark background for message modal */
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 90%;
+    transform: translateY(-20px); /* Initial subtle lift */
+    animation: fadeInModal 0.3s ease-out forwards;
+}
+
+#messageModal #modalMessage {
+    font-size: 1.2em;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+#messageModal #modalCloseButton {
+    /* Inherits download-button styles, ensure text is visible */
+    padding: 10px 25px;
+    font-size: 1em;
+}
+
+/* Keyframes for animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
@@ -248,7 +319,7 @@ header h1 {
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -256,38 +327,31 @@ header h1 {
   }
 }
 
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 /* Responsive adjustments */
-/* Tablet/Medium Screens: Cards adapt to fit, but min-width is reduced */
 @media (max-width: 1200px) {
     .container {
-        padding: 30px 40px; /* Reduced padding for smaller screens */
-    }
-    .mods-grid {
-        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Slightly smaller min-width */
-        gap: 25px;
-    }
-    .mod-card {
-        padding: 35px;
-    }
-    .mod-card h2 {
-        font-size: 2.5em;
-    }
-    .image-grid {
-        gap: 20px;
-    }
-    .mod-tray {
-      padding-top: 20px;
-      margin-top: 20px;
+        padding: 30px 40px;
     }
     .mod-card.expanded .mod-tray {
-        max-height: 900px; /* Adjust max-height for tablets */
+        max-height: 900px; /* Adjust max-height for expanded card on smaller screens */
     }
 }
 
-/* Smaller Tablets/Large Phones: Cards adapt to fit, min-width reduced further */
 @media (max-width: 768px) {
   .container {
-    padding: 20px 25px; /* Further reduced padding */
+    padding: 20px 25px;
   }
   header h1 {
     font-size: 2.5em;
@@ -302,7 +366,7 @@ header h1 {
     font-size: 2em;
   }
   .mods-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Min-width for smaller tablets/phones */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
   }
   .image-grid {
@@ -325,42 +389,34 @@ header h1 {
   }
 }
 
-/* Mobile/Small Screens: Single card per row */
 @media (max-width: 480px) {
-  .container {
-    padding: 10px 15px; /* Minimal padding on very small screens */
-    margin: 20px auto;
+  header h1 {
+    font-size: 2em;
   }
-  .mods-grid {
-    grid-template-columns: 1fr; /* Single column on mobile */
-    gap: 15px;
+  .subtitle {
+    font-size: 0.9em;
   }
   .mod-card {
-    margin: 0; /* Remove any side margin if present */
     padding: 25px;
   }
   .mod-card h2 {
     font-size: 1.8em;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+  }
+  .mods-grid {
+    grid-template-columns: 1fr; /* Single column on very small screens */
   }
   .image-grid {
-      gap: 10px;
-  }
-  .mod-tray {
-    padding-top: 10px;
-    margin-top: 10px;
-  }
-  .mod-card.expanded .mod-tray {
-    max-height: 550px;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Smaller images */
+    gap: 10px;
   }
   .download-button {
-    padding: 10px 20px;
-    font-size: 0.9em;
+    padding: 12px 25px;
+    font-size: 1em;
   }
   .back-button {
-    padding: 8px 20px;
-    font-size: 0.8em;
-    margin-top: 30px;
+    padding: 10px 25px;
+    font-size: 0.9em;
   }
   .close-button {
     font-size: 40px;
@@ -368,5 +424,11 @@ header h1 {
     height: 50px;
     top: 15px;
     right: 20px;
+  }
+  #messageModal .modal-content {
+      padding: 20px;
+  }
+  #messageModal #modalMessage {
+      font-size: 1em;
   }
 }
