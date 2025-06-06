@@ -105,6 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         card.innerHTML = `
+            <div class="download-loading-animation">
+                <h1>
+                    <span class="let1">l</span>
+                    <span class="let2">o</span>
+                    <span class="let3">a</span>
+                    <span class="let4">d</span>
+                    <span class="let5">i</span>
+                    <span class="let6">n</span>
+                    <span class="let7">g</span>
+                </h1>
+            </div>
             <h2>${displayName}</h2>
             <div class="mod-content">
                 <button class="${buttonClass}" ${buttonDataLink}>${buttonText}</button>
@@ -122,9 +133,28 @@ document.addEventListener('DOMContentLoaded', () => {
             event.stopPropagation();
             if (!downloadButton.classList.contains('coming-soon')) {
                 const link = downloadButton.dataset.link;
-                if (link) {
-                    window.open(link, '_blank');
-                }
+
+                // Animation logic for download
+                const currentModCard = downloadButton.closest('.mod-card');
+                const loadingAnimation = currentModCard.querySelector('.download-loading-animation');
+                const downloadAnimationDuration = 3000; // 3 seconds for the "loading" animation
+
+                // Hide download button and show animation
+                downloadButton.style.opacity = '0';
+                downloadButton.style.pointerEvents = 'none'; // Disable clicks during animation
+                loadingAnimation.classList.add('show');
+
+                // After the animation duration, hide animation and trigger download
+                setTimeout(() => {
+                    loadingAnimation.classList.remove('show');
+                    downloadButton.style.opacity = '1';
+                    downloadButton.style.pointerEvents = 'auto'; // Re-enable clicks
+
+                    if (link) {
+                        window.open(link, '_blank'); // Open download link after animation
+                    }
+                }, downloadAnimationDuration);
+
             } else {
                 showMessageModal("This mod is coming soon!"); // Use custom modal
             }

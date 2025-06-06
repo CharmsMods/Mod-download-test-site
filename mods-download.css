@@ -15,9 +15,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Removed subtle animated background elements (body::before)
-   as they were designed for a light background and wouldn't fit a dark theme. */
-
 /* Container styles */
 .container {
   max-width: 1200px;
@@ -77,7 +74,7 @@ header h1 {
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); /* Darker, more pronounced shadow */
   overflow: hidden;
-  position: relative;
+  position: relative; /* Essential for positioning the animation within */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   padding: 40px;
   border-left: 5px solid #6c5ce7; /* Accent color border */
@@ -304,7 +301,75 @@ header h1 {
     font-size: 1em;
 }
 
-/* Keyframes for animations */
+/* NEW: Styles for the download loading animation */
+.download-loading-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #2a2a2a; /* Match card background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Above card content */
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Allow clicks through when hidden */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition */
+}
+
+.download-loading-animation.show {
+    opacity: 1;
+    pointer-events: all; /* Enable pointer events when visible */
+}
+
+.download-loading-animation h1 {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial Narrow', sans-serif; /* Or another suitable font */
+    font-weight: 100;
+    font-size: 1.1em; /* Adjust size as needed for card */
+    color: #a3e1f0; /* Color from original animation style.css */
+    text-align: center;
+}
+
+.download-loading-animation h1 span {
+    position: relative;
+    top: 0.63em;
+    display: inline-block;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: rotateX(-90deg);
+}
+
+.download-loading-animation h1 .let1 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.2s; }
+.download-loading-animation h1 .let2 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.3s; }
+.download-loading-animation h1 .let3 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.4s; }
+.download-loading-animation h1 .let4 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.5s; }
+.download-loading-animation h1 .let5 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.6s; }
+.download-loading-animation h1 .let6 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.7s; }
+.download-loading-animation h1 .let7 { animation: drop 1.2s ease-in-out infinite; animation-delay: 1.8s; }
+
+@keyframes drop {
+  0% {
+    transform: translateY(-200%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+/* Keyframes for general animations */
 @keyframes fadeInDown {
   from {
     opacity: 0;
