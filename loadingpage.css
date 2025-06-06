@@ -189,7 +189,7 @@ body {
 #firstLoader .animation04 .line_wrapper03 { top: 50%; left: 90%; width: 30%; height: 2.5%; animation: animation04_line_wrapper03 0.45s ease-in 0.8s forwards; }
 #firstLoader .animation04 .line03 { animation: animation04_line03 0.45s ease-in 0.5s forwards; }
 @keyframes animation04_line_wrapper03 { 0% { transform-origin: right; transform: scale3d(1, 1, 1); opacity: 1; } 100% { transform-origin: right; transform: scale3d(0, 1, 1); opacity: 1; } }
-@keyframes animation04_line03 { 0% { transform-origin: left; transform: scale3d(0, 1, 1); opacity: 1; } 100% { transform-origin: left; transform: scale3d(1, 1, 1); opacity: 1; } }
+@keyframes animation04_line03 { 0% { transform-origin: left; transform: scale3d(0, 1, 1); opacity: 1; } 100% { transform: scale3d(1, 1, 1); opacity: 1; } }
 /* line04 */
 #firstLoader .animation04 .rotate135 { display: block; position: absolute; top: 49.5%; left: -22%; width: 100%; height: 100%; transform: rotate(135deg); }
 #firstLoader .animation04 .line_wrapper04 { width: 2.5%; height: 30%; animation: animation04_line_wrapper04 0.45s ease-in 0.8s forwards; }
@@ -211,7 +211,7 @@ body {
 #firstLoader .animation04 .line_wrapper07 { top: 50%; left: -20%; width: 30%; height: 2.5%; animation: animation04_line_wrapper07 0.45s ease-in 0.8s forwards; }
 #firstLoader .animation04 .line07 { animation: animation04_line07 0.45s ease-in 0.5s forwards; }
 @keyframes animation04_line_wrapper07 { 0% { transform-origin: left; transform: scale3d(1, 1, 1); opacity: 1; } 100% { transform-origin: left; transform: scale3d(0, 1, 1); opacity: 1; } }
-@keyframes animation04_line07 { 0% { transform-origin: right; transform: scale3d(0, 1, 1); opacity: 1; } 100% { transform-origin: right; transform: scale3d(1, 1, 1); opacity: 1; } }
+@keyframes animation04_line07 { 0% { transform-origin: right; transform: scale3d(0, 1, 1); opacity: 1; } 100% { transform: scale3d(1, 1, 1); opacity: 1; } }
 /* line08 */
 #firstLoader .animation04 .rotate-45 { display: block; position: absolute; top: -49.0%; left: 20%; width: 100%; height: 100%; transform: rotate(-45deg); }
 #firstLoader .animation04 .line_wrapper08 { width: 2.5%; height: 30%; animation: animation04_line_wrapper08 0.45s ease-in 0.8s forwards; }

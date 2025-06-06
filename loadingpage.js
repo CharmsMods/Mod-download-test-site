@@ -3,9 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const secondLoader = document.getElementById('secondLoader');
 
     // Duration for the first animation set to complete fully.
-    // Based on original animation delays, roughly 2.8s for animation08 to start, plus its 1.5s duration.
-    // Let's set it slightly above the longest animation to ensure it finishes.
-    const firstAnimationCompleteDuration = 4500; // milliseconds (4.5 seconds) to ensure all animations play out
+    const firstAnimationCompleteDuration = 4500; // milliseconds (4.5 seconds)
     const fadeTransitionDuration = 750; // milliseconds (0.75 seconds) for the fade effect
     const secondAnimationDisplayDuration = 3000; // milliseconds (3 seconds) as requested
 
@@ -29,14 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
         secondLoader.classList.add('show'); // This will trigger the opacity transition to 1
         secondLoader.style.zIndex = 20; // Ensure it's above the fading first loader
 
+        // Schedule the fade-out of the second animation
+        // This will start the fade-out animation before the total secondAnimationDisplayDuration is over,
+        // so it finishes exactly at the 3-second mark.
+        setTimeout(() => {
+            secondLoader.classList.add('fade-out');
+        }, secondAnimationDisplayDuration - fadeTransitionDuration);
+
     }, firstAnimationCompleteDuration);
 
-    // Phase 2: After the first loader has faded out and the second has faded in,
-    // hide the first loader completely and then redirect after the second animation's display duration.
+    // Phase 2: After both loaders have done their thing, hide the first loader completely
+    // and then redirect to the main page.
     setTimeout(() => {
         firstLoader.style.display = 'none'; // Completely hide the first loader
 
-        // After the second animation has displayed for its set duration, redirect
+        // This timeout ensures the redirection happens exactly after the secondAnimationDisplayDuration,
+        // which now includes its own fade-out.
         setTimeout(() => {
             window.location.href = 'mainpage.html'; // Redirect to the main mods page
         }, secondAnimationDisplayDuration);
