@@ -170,6 +170,7 @@ header .subtitle {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Added for smooth hiding */
 }
 
 /* --- Download Button Styling --- */
@@ -244,6 +245,7 @@ header .subtitle {
         15px 100%,
         0% calc(100% - 15px)
     );
+    overflow: hidden; /* Important: ensures content stays within the clipped path */
 }
 
 .download-loading-animation.show {
@@ -251,34 +253,65 @@ header .subtitle {
     visibility: visible;
 }
 
+/* New animation CSS starts here */
 .download-loading-animation h1 {
-    font-size: 2.5em;
-    font-weight: 700;
-    color: var(--color-cream);
-    letter-spacing: 3px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial Narrow', sans-serif; /* Keep original font for the animation */
+    font-weight: 100;
+    font-size: 1.1em; /* Adjust this to fit within your card if needed */
+    color: var(--color-cream); /* Use your color variable for consistency */
+    text-align: center;
+    width: 100%;
 }
 
-/* Individual letter animation for "loading" text */
 .download-loading-animation h1 span {
+    position: relative;
+    top: 0.63em;
     display: inline-block;
+    text-transform: uppercase;
     opacity: 0;
-    transform: translateY(20px);
-    animation: bounceIn 0.8s forwards;
+    transform: rotateX(-90deg);
 }
 
-.download-loading-animation h1 .let1 { animation-delay: 0.1s; color: var(--color-cream); } /* Lightest */
-.download-loading-animation h1 .let2 { animation-delay: 0.2s; color: var(--color-tan); }
-.download-loading-animation h1 .let3 { animation-delay: 0.3s; color: var(--color-cream); }
-.download-loading-animation h1 .let4 { animation-delay: 0.4s; color: var(--color-light-brown); }
-.download-loading-animation h1 .let5 { animation-delay: 0.5s; color: var(--color-tan); }
-.download-loading-animation h1 .let6 { animation-delay: 0.6s; color: var(--color-medium-brown); }
-.download-loading-animation h1 .let7 { animation-delay: 0.7s; color: var(--color-dark-brown); } /* Darkest */
+/* Updated animation delays and colors to match your scheme */
+.download-loading-animation h1 .let1 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.1s; color: var(--color-cream); }
+.download-loading-animation h1 .let2 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.2s; color: var(--color-tan); }
+.download-loading-animation h1 .let3 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.3s; color: var(--color-cream); }
+.download-loading-animation h1 .let4 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.4s; color: var(--color-light-brown); }
+.download-loading-animation h1 .let5 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.5s; color: var(--color-tan); }
+.download-loading-animation h1 .let6 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.6s; color: var(--color-medium-brown); }
+.download-loading-animation h1 .let7 { animation: drop 1.2s ease-in-out infinite; animation-delay: 0.7s; color: var(--color-dark-brown); }
 
-@keyframes bounceIn {
-    0% { opacity: 0; transform: translateY(20px); }
-    60% { opacity: 1; transform: translateY(-5px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes drop {
+    0% {
+        opacity: 0;
+        top: 0.63em;
+        transform: rotateX(-90deg);
+    }
+    10% {
+        opacity: 0.5;
+    }
+    20% {
+        opacity: 1;
+        top: 3.78em;
+        transform: rotateX(-360deg);
+    }
+    80% {
+        opacity: 1;
+        top: 3.78em;
+        transform: rotateX(-360deg);
+    }
+    90% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0;
+        top: 6.94em;
+    }
 }
+/* New animation CSS ends here */
+
 
 /* --- Mod Tray and Image Grid --- */
 /* Styles for the expandable section of the card containing images. */
@@ -421,7 +454,7 @@ header .subtitle {
     background-color: var(--color-medium-brown);
     color: var(--color-cream);
     text-decoration: none;
-    border-radius: 8鸣px;
+    border-radius: 8px;
     font-size: 1.1em;
     font-weight: 600;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;

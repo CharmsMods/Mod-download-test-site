@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modsConfig = [
         // --- NEWLY ADDED MODS ---
         { name: "hate_mod.zip", folder: "hate_mod", images: ["1.png", "2.png", "3.png", "4.png"] },
-        { name: "Jolt_Mod_v1.zip", folder: "Jolt_Mod_v1", images: ["1.png", "2.png", "3.png", "4.png"] }, // Kept this as it's the more recently added, and potentially more complete, version.
+        { name: "Jolt_Mod_v1.zip", folder: "Jolt_Mod_v1", images: ["1.png", "2.png", "3.png", "4.png"] },
         { name: "AQUA-Mod.zip", folder: "AQUA-Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
         { name: "2fly.zip", folder: "2fly", images: ["1.png", "2.png", "3.png", "4.png"] },
         { name: "Skipper-Mod.zip", folder: "Skipper-Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { name: "NticxMod-v6.zip", folder: "NticxMod-v6", images: ["1.png", "2.png", "3.png"] },
         { name: "Peru-Mod.zip", folder: "Peru-Mod", images: ["1.png"] },
         { name: "Nio-mod-purple-main.zip", folder: "Nio-mod-purple-main", images: ["1.png", "2.png", "3.png", "4.png"] },
-        { name: "BO$$ MOD V8 - enjoy!.zip", folder: "BO$$ MOD V8 - enjoy!", images: ["1.png", "2.png"] }, // Kept this due to more specific name.
+        { name: "BO$$ MOD V8 - enjoy!.zip", folder: "BO$$ MOD V8 - enjoy!", images: ["1.png", "2.png"] },
         { name: "Cream Mod.zip", folder: "Cream Mod", images: ["1.png", "2.png", "3.png"] },
         { name: "Grey Mod.zip", folder: "Grey Mod", images: ["1.png"] },
         { name: "Illumination Mod.zip", folder: "Illumination Mod", images: ["1.png", "2.png", "3.png", "4.png"] },
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.classList.add('mod-card');
         card.style.animationDelay = `${0.1 * (index + 1)}s`;
 
-        const downloadLink = mod.link; // Link is already constructed in modsData
+        const downloadLink = mod.link;
         const buttonClass = downloadLink ? 'download-button' : 'download-button coming-soon';
         const buttonText = downloadLink ? 'Download' : 'Coming Soon';
         const buttonDataLink = downloadLink ? `data-link="${downloadLink}"` : '';
@@ -96,14 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             }
         }
-        displayName = displayName.trim().replace(/[-_.,]+$/, ''); // Ensure no trailing hyphens/underscores
+        displayName = displayName.trim().replace(/[-_.,]+$/, '');
 
         let imageGridHtml = '';
-        // Loop through the mod.images array to create image tags
         mod.images.forEach(image => {
             imageGridHtml += `<img src="mod-download-card-pictures/${mod.folder}/${image}" alt="${displayName} Image">`;
         });
 
+        // Updated HTML structure for the mod card to include the new loading animation
         card.innerHTML = `
             <div class="download-loading-animation">
                 <h1>
@@ -130,59 +130,82 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add event listener for download button
         const downloadButton = card.querySelector('.download-button');
         downloadButton.addEventListener('click', (event) => {
-            event.stopPropagation();
+            event.stopPropagation(); // Prevent card expansion when clicking the button
+
             if (!downloadButton.classList.contains('coming-soon')) {
                 const link = downloadButton.dataset.link;
-
-                // Animation logic for download
                 const currentModCard = downloadButton.closest('.mod-card');
                 const loadingAnimation = currentModCard.querySelector('.download-loading-animation');
-                const downloadAnimationDuration = 3000; // 3 seconds for the "loading" animation
+                const modContent = currentModCard.querySelector('.mod-content');
+                const modTitle = currentModCard.querySelector('h2');
 
-                // Hide download button and show animation
-                downloadButton.style.opacity = '0';
-                downloadButton.style.pointerEvents = 'none'; // Disable clicks during animation
+                const animationDuration = 2000; // 2 seconds as requested
+
+                // Hide mod content and title
+                if (modContent) {
+                    modContent.style.opacity = '0';
+                    modContent.style.visibility = 'hidden';
+                    modContent.style.pointerEvents = 'none'; // Disable interactions
+                }
+                if (modTitle) {
+                    modTitle.style.opacity = '0';
+                    modTitle.style.visibility = 'hidden';
+                }
+
+                // Show loading animation
                 loadingAnimation.classList.add('show');
 
-                // After the animation duration, hide animation and trigger download
                 setTimeout(() => {
+                    // Hide loading animation
                     loadingAnimation.classList.remove('show');
-                    downloadButton.style.opacity = '1';
-                    downloadButton.style.pointerEvents = 'auto'; // Re-enable clicks
 
-                    if (link) {
-                        window.open(link, '_blank'); // Open download link after animation
+                    // Show mod content and title again
+                    if (modContent) {
+                        modContent.style.opacity = '1';
+                        modContent.style.visibility = 'visible';
+                        modContent.style.pointerEvents = 'auto';
                     }
-                }, downloadAnimationDuration);
+                    if (modTitle) {
+                        modTitle.style.opacity = '1';
+                        modTitle.style.visibility = 'visible';
+                    }
+
+                    // Trigger the download
+                    if (link) {
+                        window.location.href = link; // Use window.location.href for direct download
+                    }
+                }, animationDuration);
 
             } else {
-                showMessageModal("This mod is coming soon!"); // Use custom modal
+                showMessageModal("This mod is coming soon!");
             }
         });
 
-        // Add event listener for card expansion
+        // Add event listener for card expansion (click anywhere on the card except download button/image)
         const modTray = card.querySelector('.mod-tray');
-        card.addEventListener('click', () => {
-            const isExpanded = card.classList.contains('expanded');
+        card.addEventListener('click', (event) => {
+            // Only expand if the click is not on the download button or an image
+            if (!event.target.classList.contains('download-button') && event.target.tagName !== 'IMG') {
+                const isExpanded = card.classList.contains('expanded');
 
-            // Close all other expanded cards
-            document.querySelectorAll('.mod-card.expanded').forEach(otherCard => {
-                if (otherCard !== card) {
-                    otherCard.classList.remove('expanded');
-                    otherCard.querySelector('.mod-tray').style.maxHeight = '0';
-                    otherCard.querySelector('.mod-tray').classList.remove('show-images');
+                // Close all other expanded cards
+                document.querySelectorAll('.mod-card.expanded').forEach(otherCard => {
+                    if (otherCard !== card) {
+                        otherCard.classList.remove('expanded');
+                        otherCard.querySelector('.mod-tray').style.maxHeight = '0';
+                        otherCard.querySelector('.mod-tray').classList.remove('show-images');
+                    }
+                });
+
+                if (isExpanded) {
+                    card.classList.remove('expanded');
+                    modTray.style.maxHeight = '0';
+                    modTray.classList.remove('show-images');
+                } else {
+                    card.classList.add('expanded');
+                    modTray.style.maxHeight = modTray.scrollHeight + 50 + 'px'; // Add buffer for smooth transition
+                    modTray.classList.add('show-images');
                 }
-            });
-
-            if (isExpanded) {
-                card.classList.remove('expanded');
-                modTray.style.maxHeight = '0';
-                modTray.classList.remove('show-images');
-            } else {
-                card.classList.add('expanded');
-                // Set maxHeight to scrollHeight plus a buffer to ensure content fits
-                modTray.style.maxHeight = modTray.scrollHeight + 50 + 'px';
-                modTray.classList.add('show-images');
             }
         });
 
@@ -190,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const images = card.querySelectorAll('.image-grid img');
         images.forEach(image => {
             image.addEventListener('click', (event) => {
-                event.stopPropagation();
+                event.stopPropagation(); // Prevent card expansion when clicking an image
                 modalImage.src = event.target.src;
                 fullscreenModal.style.display = 'flex';
             });
